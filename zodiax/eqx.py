@@ -42,6 +42,9 @@ def filter_grad(
         @wraps(func)
         def inner_wrapper(pytree : PyTree, *args, **kwargs):
 
+            # convert floats to JAX arrays for grad
+            pytree = zodiax.set_array(pytree, parameters)
+
             # Convert parameters
             boolean_filter = zodiax.tree.boolean_filter(pytree, parameters)
 
@@ -85,6 +88,9 @@ def filter_value_and_grad(
 
         @wraps(func)
         def inner_wrapper(pytree : PyTree, *args, **kwargs):
+
+            # convert floats to JAX arrays for grad
+            pytree = zodiax.set_array(pytree, parameters)
 
             # Convert parameters
             boolean_filter = zodiax.tree.boolean_filter(pytree, parameters)

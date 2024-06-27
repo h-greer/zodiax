@@ -1,6 +1,6 @@
 import zodiax
 from jax.tree_util import tree_map
-from equinox import is_array, filter as eqx_filter
+from equinox import is_array, filter as eqx_filter, is_inexact_array_like
 from optax import adam, multi_transform, GradientTransformation
 from typing import Union, List
 from jaxtyping import PyTree
@@ -62,7 +62,7 @@ def get_optimiser(pytree     : Base(),
 
     # Get optimiser object and filtered optimiser
     optim = multi_transform(opt_dict, param_spec)
-    opt_state = optim.init(eqx_filter(pytree, is_array))
+    opt_state = optim.init(eqx_filter(pytree, is_inexact_array_like))
 
     # Return
     return (optim, opt_state)
